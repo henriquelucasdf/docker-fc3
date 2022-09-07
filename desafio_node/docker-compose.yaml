@@ -2,7 +2,7 @@ version: "3"
 
 services:
 
-  node:
+  app:
     build:
       context: node
     image: henriquelucasdf/node_fc:prod
@@ -16,12 +16,14 @@ services:
       - "3000:3000"
 
   db:
-    image: mysql:5.7.16 # problema de permissão do wsl2 com o 5.7
-    command: --innodb-use-native-aio=0
+    image: mysql:5.7.16 # problema de permissão do wsl2 com o mysql:5.7
+    command:
+      - --innodb-use-native-aio=0
     container_name: db_node
-    restart: always
+    #restart: always
     tty: true
     volumes:
+      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
       - ./mysql:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=nodedb
