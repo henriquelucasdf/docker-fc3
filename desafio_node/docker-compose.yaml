@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+
+  node:
+    build:
+      context: node
+    image: henriquelucasdf/node_fc:prod
+    container_name: node_fc
+    networks:
+      - nodenet
+    volumes:
+      - ./node/src/:/usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+
+  db:
+    image: mysql:5.7.16 # problema de permissão do wsl2 com o 5.7
+    command: --innodb-use-native-aio=0
+    container_name: db_node
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      - nodenet
+
+networks:
+  nodenet:
+    driver: bridge
