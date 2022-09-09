@@ -20,7 +20,7 @@ services:
     command:
       - --innodb-use-native-aio=0
     container_name: db_node
-    #restart: always
+    restart: always
     tty: true
     volumes:
       - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
