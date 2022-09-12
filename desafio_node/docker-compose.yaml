@@ -2,7 +2,20 @@ version: "3"
 
 services:
 
-  app:
+  nginx:
+    build:
+      context: nginx
+    image: henriquelucasdf/nginx_node:latest
+    container_name: nginx_node
+    restart: always
+    networks:
+      - nodenet
+    ports:
+      - "8080:80"
+    depends_on:
+      - node_app
+
+  node_app:
     build:
       context: node
     image: henriquelucasdf/node_fc:prod
@@ -15,8 +28,6 @@ services:
     volumes:
       - ./node/src/:/usr/src/app
     tty: true
-    ports:
-      - "3000:3000"
     depends_on:
       - db
 
