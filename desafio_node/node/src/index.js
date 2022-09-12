@@ -1,51 +1,27 @@
 const express = require('express')
 const app = express()
-var bodyParser = require('body-parser');
-var arr = [
-    "[NOMES CADASTRADOS]",
-  ];
 const port = 3000
 const config = {
-    host: 'db_node',
+    host: 'db',
     user: 'root',
     password: 'root',
     database: 'nodedb'
 };
-
 const mysql = require('mysql')
 const connection = mysql.createConnection(config)
+const sql_in = `INSERT INTO people(name) values('Henrique Lucas')`
 
-app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.urlencoded({
-   extended: false
-}));
-app.use(bodyParser.json());
+connection.query(sql_in)
 
-app.get('/', function(req, res){
-
-    res.sendFile(__dirname + '/simple_form.html'); 
-
-});
-
-app.post('/',function(req,res){
-    var username = req.body.username;
-    var sqli = `INSERT INTO people(name) values('` + username + `')`
-    connection.query(sqli)
-   
+app.get('/', (req, res) => {
     connection.query("SELECT name FROM people", function (err, result, fields) {
-        Object.keys(result).forEach(function(key) {
-            var row = result[key];
+        if (err) throw err;
+        var name_ = result[0].name
+        res.send('<h1>Full Cycle 3.0</h1> \n <h3>Nome cadastrado: </h3>' + name_)
+    })
+})
 
-            arr.push(row.name)
-            
-          });
-          res.send(arr.join('  |  '));
-          
-        });
-    
-    });
-      
+app.listen(port, () => {
+    console.log('Rodando na porta ' + port)
+})
 
-
-    
-app.listen(port);
