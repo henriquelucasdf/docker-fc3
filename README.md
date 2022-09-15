@@ -12,3 +12,6 @@
 ### Observações:
 - Como não conheço nem node nem javascript, o app em node ficou bem simples e diversas melhorias poderiam ser feitas (por exemplo, fechar a conexão com o BD). Como o foco é no docker, preferi manter a app o mais simples o possível.
 - Quando executarem o docker-compose pela primeira vez, o banco sql será criado do zero, demorando cerca de 30s para o app node.js conseguir a conexão. 
+
+
+
